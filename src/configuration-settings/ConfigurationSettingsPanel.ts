@@ -1,6 +1,5 @@
 import * as vscode from 'vscode';
 import {getNonce} from '../getNonce';
-// import { PathDialog } from './PathDialog';
 
 export class ConfigurationSettingsPanel {
   /**
