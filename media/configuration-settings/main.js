@@ -1,13 +1,13 @@
 // This script will be run within the webview itself
 // It cannot access the main VS Code APIs directly.
 
-const vscode = acquireVsCodeApi();
+// const vscode = acquireVsCodeApi();
 
 console.log('view from javascript.');
 
-const import = {
+const oneImport = {
     type: 'import',
-    able: false,
+    use: true,
     options: [
         {optionName: 'bcq', optionValue: false},
         {optionName: 'onnx', optionValue: false},
@@ -16,9 +16,9 @@ const import = {
     ]
 }
 
-const import_bcq = {
+const oneImportBcq = {
     type: 'import_bcq',
-    able: false,
+    use: false,
     options: [
         {optionName: 'v1', optionValue: false},
         {optionName: 'v2', optionValue: false},
@@ -27,13 +27,12 @@ const import_bcq = {
         {optionName: 'input_arrays', optionValue: ''},
         {optionName: 'input_shapes', optionValue: ''},
         {optionName: 'output_arrays', optionValue: ''},
-
     ]
 }
 
-const import_onnx = {
+const oneImportOnnx = {
     type: 'import_onnx',
-    able: false,
+    use: false,
     options: [
         {optionName: 'input_path', optionValue: ''},
         {optionName: 'output_path', optionValue: ''},
@@ -44,9 +43,9 @@ const import_onnx = {
     ]
 }
 
-const import_tf = {
+const oneImportTf = {
     type: 'import_tf',
-    able: false,
+    use: false,
     options: [
         {optionName: 'v1', optionValue: false},
         {optionName: 'v2', optionValue: false},
@@ -61,9 +60,9 @@ const import_tf = {
     ]
 }
 
-const import_tflite = {
+const oneImportTflite = {
     type: 'import_tflite',
-    able: false,
+    use: false,
     options: [
         {optionName: 'input_path', optionValue: ''},
         {optionName: 'output_path', optionValue: ''},
@@ -72,7 +71,7 @@ const import_tflite = {
 
 const optimize = {
     type: 'optimize',
-    able: false,
+    use: true,
     options: [
         {optionName: 'p', optionValue: false},
         {optionName: 'change_outputs', optionValue: false},
@@ -121,18 +120,9 @@ const optimize = {
     ]
 }
 
-const pack = {
-    type: 'pack',
-    able: false,
-    options: [
-        {optionName: 'input_path', optionValue: ''},
-        {optionName: 'output_path', optionValue: ''},
-    ]
-}
-
 const quantize = {
     type: 'pack',
-    able: false,
+    use: true,
     options: [
         {optionName: 'input_path', optionValue: ''},
         {optionName: 'input_data', optionValue: ''},
@@ -149,9 +139,18 @@ const quantize = {
     ]
 }
 
+const pack = {
+    type: 'pack',
+    use: true,
+    options: [
+        {optionName: 'input_path', optionValue: ''},
+        {optionName: 'output_path', optionValue: ''},
+    ]
+}
+
 const codegen = {
     type: 'codegen',
-    able: false,
+    use: false,
     options: [
         {optionName: 'backend', optionValue: ''},
         {optionName: 'command', optionValue: ''},
@@ -160,9 +159,170 @@ const codegen = {
 
 const profile = {
     type: 'profile',
-    able: false,
+    use: false,
     options: [
         {optionName: 'backend', optionValue: ''},
         {optionName: 'command', optionValue: ''},
     ]
 }
+
+const changeTargetUse = function(target) {
+    const optionFieldset = document.querySelector('#options')
+    if (target.use === true) {
+        target.use = false
+        optionFieldset.disabled = true
+    } else {
+        target.use = true
+        optionFieldset.disabled = false
+    }
+}
+
+const configurations = [
+    oneImport,
+    oneImportBcq,
+    oneImportOnnx,
+    oneImportTf,
+    oneImportTflite,
+    optimize,
+    quantize,
+    pack,
+    codegen,
+    profile
+]
+
+const emptyOptionBox = function() { 
+    const optionsName = document.querySelector('#optionsName')
+    while (optionsName.hasChildNodes()) {
+        optionsName.removeChild(optionsName.firstChild)
+    }
+    const optionsValue = document.querySelector('#optionsValue')
+    while (optionsValue.hasChildNodes()) {
+        optionsValue.removeChild(optionsValue.firstChild)
+    }
+}
+
+const buildOptionDom = function(target) {
+    // tool 이름이랑 토글버튼 변경하는 부분
+    const h2Tag = document.querySelector('#toolName')
+    h2Tag.innerText = `Options for ${target.type}`
+    const useBtn = document.querySelector('#useBtn')
+    useBtn.addEventListener('click', function(target) {
+        const optionFieldset = document.querySelector('#options')
+        if (target.use === true) {
+            target.use = false
+            optionFieldset.disabled = true
+        } else {
+            target.use = true
+            optionFieldset.disabled = false
+        }
+    })
+    const optionFieldset = document.querySelector('#options')
+    if (target.use === true) {
+        useBtn.checked = true
+        optionFieldset.disabled = false
+    } else {
+        useBtn.checked = false
+        optionFieldset.disabled = true
+    }
+    // 내부 옵션들 하나씩 포문 돌면서 생성하는 기능
+    const optionsNameTag = document.querySelector('#optionsName')
+    const optionsValueTag = document.querySelector('#optionsValue')
+    const nameUlTag = document.createElement('ul')
+    const valueUlTag = document.createElement('ul')
+    for (let i=0;i<target.options.length;i++) {
+        const nameLiTag = document.createElement('li')
+        const valueLiTag = document.createElement('li')
+        if (typeof target.options[i].optionValue === 'boolean') {
+            // 들어오는 값이 boolean 값일 경우
+            const valueLabelTag = document.createElement('label')
+            valueLabelTag.classList.add('switch')
+            const inputTag = document.createElement('input')
+            inputTag.type = 'checkbox'
+            if (target.options[i].optionValue === true) {
+                inputTag.checked = true
+            }
+            inputTag.addEventListener('click', function() {
+                if (target.options[i].optionValue === true) {
+                    target.options[i].optionValue = false
+                } else {
+                    target.options[i].optionValue = true
+                }
+            })
+            const spanTag = document.createElement('span')
+            spanTag.classList.add('slider')
+            spanTag.classList.add('round')
+            valueLabelTag.appendChild(inputTag)
+            valueLabelTag.appendChild(spanTag)
+            valueLiTag.appendChild(valueLabelTag)
+            nameLiTag.innerText = target.options[i].optionName
+        } else {
+            // 들어오는 값이 string 값일 경우
+            nameLiTag.innerText = target.options[i].optionName
+            const inputTag = document.createElement('input')
+            if (target.options[i].optionValue.trim() !== '') {
+                inputTag.value = target.options[i].optionValue
+            }
+            inputTag.addEventListener('change', function(event) {
+                target.options[i].optionValue = event.target.value
+            })
+            valueLiTag.appendChild(inputTag)
+        }
+        valueUlTag.appendChild(valueLiTag)
+        nameUlTag.appendChild(nameLiTag)
+    }
+    optionsValueTag.appendChild(valueUlTag)
+    optionsNameTag.appendChild(nameUlTag)
+}
+
+const showOptions = function(event) {
+    emptyOptionBox()
+    switch (event.target.id) {
+        case 'import':{
+            const h2Tag = document.querySelector('#toolName')
+            h2Tag.innerText = 'Options for Import'
+            const useBtn = document.querySelector('#useBtn')
+            const optionFieldset = document.querySelector('#options')
+            useBtn.checked = true
+            break
+        }
+        case 'optimize':{
+            buildOptionDom(optimize)
+            break
+        }
+        case 'quantize':{
+            buildOptionDom(quantize)
+            break
+        }
+        case 'pack': {
+            buildOptionDom(pack)
+            break
+        }
+        case 'codegen': {
+            buildOptionDom(codegen)
+            break
+        }
+        case 'profile': {
+            buildOptionDom(profile)
+            break
+        }
+    }
+}
+
+const exportConfiguration = function() {
+
+}
+const runConfiguration = function() {
+
+}
+const importConfiguration = function() {
+
+}
+document.querySelector('#import').addEventListener('click', showOptions)
+document.querySelector('#optimize').addEventListener('click', showOptions)
+document.querySelector('#quantize').addEventListener('click', showOptions)
+document.querySelector('#pack').addEventListener('click', showOptions)
+document.querySelector('#codegen').addEventListener('click', showOptions)
+document.querySelector('#profile').addEventListener('click', showOptions)
+document.querySelector('#importBtn').addEventListener('click', importConfiguration)
+document.querySelector('#runBtn').addEventListener('click',runConfiguration)
+document.querySelector('#exportConfiguration').addEventListener('click', exportConfiguration)
