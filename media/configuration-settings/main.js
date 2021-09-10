@@ -236,6 +236,10 @@ const emptyOptionBox = function(isImport) {
             toolList[i].classList.remove('selected')
         }
     }
+    const toolList = document.querySelectorAll('.tools div')
+    for (let i=0;i<toolList.length;i++) {
+        toolList[i].classList.remove('selected')
+    }
     const optionsName = document.querySelector('#optionsName')
     while (optionsName.hasChildNodes()) {
         optionsName.removeChild(optionsName.firstChild)
