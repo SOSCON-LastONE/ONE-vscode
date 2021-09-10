@@ -261,8 +261,8 @@ const buildOptionDom = function(target) {
             nameLiTag.innerText = target.options[i].optionName
             if (target.options[i].optionName === 'input_path') {
                 const inputTag = document.createElement('input')
-                inputTag.disabled = true
                 inputTag.id = target.options[i].optionName
+                inputTag.placeholder = 'please enter path to your model'
                 if (target.options[i].optionValue.trim() !== '') {
                     inputTag.value = target.options[i].optionValue
                 }
@@ -274,18 +274,14 @@ const buildOptionDom = function(target) {
                 })
                 
                 valueLiTag.appendChild(inputTag)
-                valueLiTag.appendChild(btn)
             } else if (target.options[i].optionName === 'output_path') {
                 const inputTag = document.createElement('input')
-                inputTag.disabled = true
                 inputTag.id = target.options[i].optionName
+                inputTag.placeholder = 'please enter path to your result'
                 if (target.options[i].optionValue.trim() !== '') {
                     inputTag.value = target.options[i].optionValue
                 }
-                const btn = document.createElement('button')
-                btn.innerText = "Search"
                 valueLiTag.appendChild(inputTag)
-                valueLiTag.appendChild(btn)
             } else {
                 const inputTag = document.createElement('input')
                 if (target.options[i].optionValue.trim() !== '') {
@@ -295,7 +291,7 @@ const buildOptionDom = function(target) {
                     target.options[i].optionValue = event.target.value
                 })
                 valueLiTag.appendChild(inputTag)
-            }
+            }  
         } else {
             nameLiTag.innerText =target.options[i].optionName
             const select = document.createElement('select')
@@ -312,8 +308,7 @@ const buildOptionDom = function(target) {
             }
             select.addEventListener('change', function(event) {
                 target.options[i].chosenValue = select[event.target.selectedIndex].value
-            })
-            
+            })            
             valueLiTag.appendChild(select)
         }
         valueUlTag.appendChild(valueLiTag)
@@ -398,7 +393,6 @@ const changeSelect = function(event) {
 }
 
 const showOptions = function(event) {
-    console.log("aaaaaaaaaaaaaa")
     emptyOptionBox(false)
     switch (event.target.id) {
         case 'import':{
