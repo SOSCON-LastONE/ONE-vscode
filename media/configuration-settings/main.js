@@ -266,13 +266,9 @@ const buildOptionDom = function(target) {
                 if (target.options[i].optionValue.trim() !== '') {
                     inputTag.value = target.options[i].optionValue
                 }
-                const btn = document.createElement('button')
-                btn.innerText = "Search"
-                btn.id = "findFileBtn"
-                btn.addEventListener('click', function() {
+                inputTag.addEventListener('click', function(){
                     getFilePath()
-                })
-                
+                })             
                 valueLiTag.appendChild(inputTag)
             } else if (target.options[i].optionName === 'output_path') {
                 const inputTag = document.createElement('input')
@@ -291,7 +287,7 @@ const buildOptionDom = function(target) {
                     target.options[i].optionValue = event.target.value
                 })
                 valueLiTag.appendChild(inputTag)
-            }  
+            }
         } else {
             nameLiTag.innerText =target.options[i].optionName
             const select = document.createElement('select')
@@ -308,7 +304,8 @@ const buildOptionDom = function(target) {
             }
             select.addEventListener('change', function(event) {
                 target.options[i].chosenValue = select[event.target.selectedIndex].value
-            })            
+            })
+            
             valueLiTag.appendChild(select)
         }
         valueUlTag.appendChild(valueLiTag)
