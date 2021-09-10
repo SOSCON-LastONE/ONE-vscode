@@ -169,23 +169,16 @@ const profile = {
     ]
 }
 
-const changeTargetUse = function(target) {
-    const optionFieldset = document.querySelector('#options')
-    if (target.use === true) {
-        target.use = false
-        optionFieldset.disabled = true
-    } else {
-        target.use = true
-        optionFieldset.disabled = false
-    }
-}
-
 const emptyOptionBox = function(isImport) { 
     if (!isImport) {
         const locaForSelect = document.querySelector('#locaForSelect')
         while (locaForSelect.hasChildNodes()) {
         locaForSelect.removeChild(locaForSelect.firstChild)
         }
+    }
+    const toolList = document.querySelectorAll('.tools div')
+    for (let i=0;i<toolList.length;i++) {
+        toolList[i].classList.remove('selected')
     }
     const optionsName = document.querySelector('#optionsName')
     while (optionsName.hasChildNodes()) {
@@ -393,10 +386,11 @@ const changeSelect = function(event) {
 
 const showOptions = function(event) {
     emptyOptionBox(false)
+    event.target.classList.add('selected')
     switch (event.target.id) {
         case 'import':{
             const h2Tag = document.querySelector('#toolName')
-            h2Tag.innerText = 'Options for Import'
+            h2Tag.innerText = 'Options for import'
             const useBtn = document.querySelector('#useBtn')
             useBtn.checked = true
             useBtn.disabled = true
@@ -482,8 +476,6 @@ document.querySelector('#importBtn').addEventListener('click', importConfigurati
 document.querySelector('#runBtn').addEventListener('click',runConfiguration)
 document.querySelector('#exportBtn').addEventListener('click', exportConfiguration)
 const tmpEvent = {
-    target: {
-        id:'import'
-    }
+    target: document.querySelector('#import') 
 }
 showOptions(tmpEvent)
