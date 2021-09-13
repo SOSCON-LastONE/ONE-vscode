@@ -1,7 +1,7 @@
 // This script will be run within the webview itself
 // It cannot access the main VS Code APIs directly.
 
-// const vscode = acquireVsCodeApi();
+const vscode = acquireVsCodeApi();
 
 console.log('view from javascript.');
 
@@ -169,6 +169,18 @@ const profile = {
     ]
 }
 
+const oneToolList = [
+    oneImportBcq,
+    oneImportOnnx,
+    oneImportTf,
+    oneImportTflite,
+    optimize,
+    quantize,
+    pack,
+    codegen,
+    profile
+]
+
 const emptyOptionBox = function(isImport) { 
     if (!isImport) {
         const locaForSelect = document.querySelector('#locaForSelect')
@@ -261,6 +273,9 @@ const buildOptionDom = function(target) {
                 if (target.options[i].optionValue.trim() !== '') {
                     inputTag.value = target.options[i].optionValue
                 }
+                inputTag.addEventListener('click', function(){
+                    getFilePath(target.type)
+                })             
                 valueLiTag.appendChild(inputTag)
             } else if (target.options[i].optionName === 'output_path') {
                 const inputTag = document.createElement('input')
@@ -305,6 +320,14 @@ const buildOptionDom = function(target) {
     }
     optionsValueTag.appendChild(valueUlTag)
     optionsNameTag.appendChild(nameUlTag)
+}
+
+
+const getFilePath = function(tool){
+    vscode.postMessage({
+        command: 'inputPath',
+        selectedTool: tool
+    })
 }
 
 const changeSelect = function(event) {
@@ -445,6 +468,28 @@ const runConfiguration = function() {
 const importConfiguration = function() {
 
 }
+
+window.addEventListener('message', event => {
+    const data = event.data; 
+    switch(data.command){
+        case 'inputPath':
+            for(let i = 0; i < oneToolList.length; i++){
+                if(oneToolList[i].type === data.selectedTool){
+                    for(let j = 0; j < oneToolList[i].options.length; j++){
+                        if(oneToolList[i].options[j].optionName === 'input_path'){
+                            oneToolList[i].options[j].optionValue = data.filePath
+                            const inputTag = document.querySelector('#input_path')
+                            inputTag.value = data.filePath
+                            break;
+                        }
+                    }
+                    break;
+                }
+            }
+        break;
+    }
+})
+
 document.querySelector('#import').addEventListener('click', showOptions)
 document.querySelector('#optimize').addEventListener('click', showOptions)
 document.querySelector('#quantize').addEventListener('click', showOptions)
