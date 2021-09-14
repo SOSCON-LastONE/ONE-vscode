@@ -1,68 +1,4 @@
 {
-    "one-build": {
-        "prefix": "one-build",
-        "body": [
-            "[one-build]",
-            "one-import-tf=${1:True}",
-            "one-import-tflite=${2:True}",
-            "one-import-bcq=${3:True}",
-            "one-import-onnx=${4:True}",
-            "one-optimize=${5:True}",
-            "one-quantize=${6:True}",
-            "one-pack=${7:True}",
-            "one-codegen=${8:True}",
-            "",
-            "[one-import-tf]",
-            "input_path=$9",
-            "output_path=$10",
-            "input_arrays=$11",
-            "input_shapes=$12",
-            "output_arrays=$13",
-            "converter_version=$14",
-            "model_format=$15",
-            "save_intermediate=$16",
-            "",
-            "[one-import-tflite]",
-            "input_path=$17",
-            "output_path=$18",
-            "",
-            "[one-import-bcq]",
-            "input_path=$19",
-            "output_path=$20",
-            "input_arrays=$21",
-            "input_shapes=$22",
-            "output_arrays=$23",
-            "converter_version=$24",
-            "",
-            "[one-import-onnx]",
-            "input_path=$25",
-            "output_path=$26",
-            "input_arrays=$27",
-            "output_arrays=$28",
-            "converter_version=$29",
-            "model_format=$30",
-            "save_intermediate=$31",
-            "",
-            "[one-optimize]",
-            "input_path=$17",
-            "output_path=$18",
-            "",
-            "[one-codegen]",
-            "backend=$19",
-            "",
-            "[one-quantize]",
-            "input_path=$20",
-            "output_path=$21",
-            "",
-            "[one-pack]",
-            "input_path=$22",
-            "output_path=$23",
-            "$0"
-        ],
-        "description": [
-            "command line tool to run ONE drivers in customized order"
-        ]
-    },
     "one-import-tf": {
         "prefix" : "one-import-tf",
         "body" : [
@@ -143,6 +79,7 @@
         "body": [
             "[one-codegen]",
             "backend=$1",
+            "command=$2",
             "$0"
         ],
         "description": [
@@ -155,6 +92,15 @@
             "[one-quantize]",
             "input_path=$1",
             "output_path=$2",
+            "input_data=$3",
+            "input_data_format=$4",
+            "generate_profile_data=$5",
+            "input_dtype=$6",
+            "quantized_dtype=$7",
+            "granularity=$8",
+            "min_percentile=$9",
+            "max_percentile=$10",
+            "mode=$11",
             "$0"
         ],
         "description": [
@@ -171,6 +117,18 @@
         ],
         "description": [
             "command line tool to package circle and metadata into nnpackage"
+        ]
+    },
+    "one-profile": {
+        "prefix": "one-profile",
+        "body": [
+            "[one-profile]",
+            "backend=$1",
+            "command=$2",
+            "$0"
+        ],
+        "description": [
+            "command line tool for profiling backend model"
         ]
     }
 }
