@@ -1,3 +1,4 @@
+import { request } from 'http';
 import * as vscode from 'vscode';
 import {getNonce} from '../getNonce';
 import {importConfig} from './Dialog/ImportConfigDialog'
@@ -52,6 +53,25 @@ export class ConfigurationSettingsPanel {
     ConfigurationSettingsPanel.currentPanel = new ConfigurationSettingsPanel(panel, extensionUri);
   }
 
+  private exportConfig(){
+    const ConfigPareser = require('configparser');
+    const config = new ConfigPareser();
+    
+    // Adding sections and adding keys
+    config.addSection('User');
+    config.set('User', 'token', 'some value');
+    config.set('User', 'exp', 'some value');
+
+    // With String Interpolation, %(key_name)s
+    config.addSection('MetaData');
+    config.set('MetaData', 'path', '/home/%(dir_name)s/');
+    config.set('MetaData', 'dir_name', 'me');
+
+    // config.write('my-cfg-file.cfg');
+    console.log('successfully wrote file!!!')
+    return config;
+  }
+
   private constructor(panel: vscode.WebviewPanel, extensionUri: vscode.Uri) {
     this._panel = panel;
     this._extensionUri = extensionUri;
@@ -98,23 +118,37 @@ export class ConfigurationSettingsPanel {
     webview.onDidReceiveMessage(async (data) => {
       switch (data.command) {
         case 'inputPath':
-          const options: vscode.OpenDialogOptions = {
+          const optionsForInputDialog: vscode.OpenDialogOptions = {
             canSelectMany: false, 
             openLabel: 'Open',
             filters: {
                'allFiles': ['*']
            }
          };
-          vscode.window.showOpenDialog(options).then(fileUri => {
-              if (fileUri && fileUri[0]) {
-                  const pathToModelFile = fileUri[0].fsPath;
-                  console.log('Selected file: ' + pathToModelFile);
-                  webview.postMessage({
-                    command: 'inputPath',
-                    selectedTool: data.selectedTool,
-                    filePath: pathToModelFile,
-                  });
-                }
+
+        vscode.window.showOpenDialog(optionsForInputDialog).then(fileUri => {
+          if (fileUri && fileUri[0]) {
+            const pathToModelFile = fileUri[0].fsPath;
+            console.log('Selected file: ' + pathToModelFile);
+                webview.postMessage({
+                  command: 'inputPath',
+                  selectedTool: data.selectedTool,
+                  filePath: pathToModelFile,
+                });
+              }
+            }
+          );
+        break;
+        case 'exportConfig':
+          const optionsForExportDialog: vscode.SaveDialogOptions = {
+            filters: {
+              'allFiles': ['*']
+            }
+          };
+          vscode.window.showSaveDialog(optionsForExportDialog).then(fileUri => {
+            if (fileUri) {
+              this.exportConfig().write(fileUri.path + '.cfg');
+              console.log('Selected file!!!: ' + fileUri.path + '.cfg');
               }
             );
           break;
