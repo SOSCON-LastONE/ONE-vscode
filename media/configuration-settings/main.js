@@ -389,6 +389,13 @@ const getFilePath = function(tool){
     })
 }
 
+const sendMessage = function(command, payload){
+    vscode.postMessage({
+        command: command,
+        payload: payload
+    })
+}
+
 const changeSelect = function(event) {
     emptyOptionBox(true)
     const selectedText = event.target.options[event.target.selectedIndex].text
@@ -616,10 +623,11 @@ const exportValidation = function() {
 }
 
 const exportConfiguration = function() {
+    sendMessage('exportConfig', '')
     if (exportValidation()) {
         console.log('validation OK')
     }
-}
+
 const runConfiguration = function() {
 
 }
