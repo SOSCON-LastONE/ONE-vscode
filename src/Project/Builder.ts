@@ -20,9 +20,12 @@ import {Balloon} from '../Utils/Balloon';
 import * as helpers from '../Utils/Helpers';
 import {Logger} from '../Utils/Logger';
 
+import {BuilderJob} from './BuilderJob';
+import {Job} from './Job';
+import {JobImportTF} from './JobImportTF';
 import {WorkFlow} from './WorkFlow';
 
-export class Builder {
+export class Builder implements BuilderJob {
   logger: Logger;
   workFlow: WorkFlow;  // our build WorkFlow
   currentWorkspace: string;
@@ -36,15 +39,25 @@ export class Builder {
   // TODO import .cfg file to BuildFlow
 
   public init() {
-    // TODO implement
+    this.workFlow.clearJobs();
+  }
+
+  // BuilderJob implements
+  public addJob(job: Job): void {
+    this.workFlow.addJob(job);
   }
 
   // called from user interface
   public build(context: vscode.ExtensionContext) {
     try {
       this.currentWorkspace = helpers.obtainWorkspaceRoot();
-    } catch (e) {
-      Balloon.error(e);
+    } catch (e: unknown) {
+      let errmsg = 'Failed to obtain workspace root';
+      if (e instanceof Error) {
+        errmsg = e.message;
+      }
+      // TODO add more type for e if changed in obtainWorkspaceRoot
+      Balloon.error(errmsg);
       return;
     }
 
