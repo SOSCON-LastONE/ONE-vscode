@@ -400,8 +400,8 @@ const sendMessage = function(command, payload){
     vscode.postMessage({
         command: command,
         payload: payload
-    })
-}
+    });
+};
 
 const changeSelect = function(event) {
     emptyOptionBox(true)
