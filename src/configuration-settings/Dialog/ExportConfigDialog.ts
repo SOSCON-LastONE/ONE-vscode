@@ -1,9 +1,33 @@
+import { DefaultDeserializer } from 'v8';
 import * as vscode from 'vscode';
+import { ResourceLimits } from 'worker_threads';
 
-export function exportConfig(): void{
+export interface Tool{
+    type: string;
+    use: boolean;
+    options: [option];
+}
+
+export interface option{
+  optionName:string;
+  optionValue:boolean | string;
+}
+
+export function exportConfig(oneToolList: any): void{
     const ConfigPareser = require('configparser');
     const config = new ConfigPareser();
     
+    config.addSection('one-build');
+    console.log('dddddddddddd');
+    console.log(oneToolList[0]);
+    console.log('dddddaaaaaadddddddd');
+    console.log(oneToolList[1]);
+
+    for(let i = 0; i < oneToolList.length; i++){
+      config.addSection(oneToolList[i].type);
+      console.log(oneToolList[i].type);
+    }
+    config.set()
     // Adding sections and adding keys
     config.addSection('User');
     config.set('User', 'token', 'some value');
@@ -22,10 +46,10 @@ export function exportConfig(): void{
           'allFiles': ['*']
         }
       };
-      vscode.window.showSaveDialog(optionsForExportDialog).then(fileUri => {
-        if (fileUri) {
-          config.write(fileUri.path + '.cfg');
-          console.log('Selected file!!!: ' + fileUri.path + '.cfg');
-          }
-      });
+    vscode.window.showSaveDialog(optionsForExportDialog).then(fileUri => {
+      if (fileUri) {
+        config.write(fileUri.path + '.cfg');
+        console.log('Selected file!!!: ' + fileUri.path + '.cfg');
+        }
+    });
 }
