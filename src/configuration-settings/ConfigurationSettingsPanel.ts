@@ -53,25 +53,6 @@ export class ConfigurationSettingsPanel {
     ConfigurationSettingsPanel.currentPanel = new ConfigurationSettingsPanel(panel, extensionUri);
   }
 
-  // private exportConfig(){
-  //   const ConfigPareser = require('configparser');
-  //   const config = new ConfigPareser();
-    
-  //   // Adding sections and adding keys
-  //   config.addSection('User');
-  //   config.set('User', 'token', 'some value');
-  //   config.set('User', 'exp', 'some value');
-
-  //   // With String Interpolation, %(key_name)s
-  //   config.addSection('MetaData');
-  //   config.set('MetaData', 'path', '/home/%(dir_name)s/');
-  //   config.set('MetaData', 'dir_name', 'me');
-
-  //   // config.write('my-cfg-file.cfg');
-  //   console.log('successfully wrote file!!!')
-  //   return config;
-  // }
-
   private constructor(panel: vscode.WebviewPanel, extensionUri: vscode.Uri) {
     this._panel = panel;
     this._extensionUri = extensionUri;
@@ -140,7 +121,6 @@ export class ConfigurationSettingsPanel {
           );
         break;
         case 'exportConfig':
-          console.log(data.payload);
           exportConfig(data.payload);
         break;
       }
