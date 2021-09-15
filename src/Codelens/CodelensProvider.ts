@@ -1,5 +1,5 @@
-import * as vscode from "vscode";
-import tools from "./json/tools.json";
+import * as vscode from 'vscode';
+import tools from './json/tools.json';
 
 /**
  * CodelensProvider
@@ -17,8 +17,8 @@ export class CodelensProvider implements vscode.CodeLensProvider {
             this._onDidChangeCodeLenses.fire();
         });
 
-        vscode.commands.registerCommand("onevscode.codelensAction", (args: any, args2: any) => {
-            const show_tool_name = vscode.workspace.getConfiguration("one-vscode").get("showInfo") as string[];
+        vscode.commands.registerCommand('onevscode.codelensAction', (args: any, args2: any) => {
+            const show_tool_name = vscode.workspace.getConfiguration('one-vscode').get('showInfo') as string[];
 
             const find_tool_idx = show_tool_name.findIndex((tool) => tool == args);
             if (find_tool_idx == -1) {
@@ -26,15 +26,15 @@ export class CodelensProvider implements vscode.CodeLensProvider {
             } else {
                 show_tool_name.splice(find_tool_idx, 1);
             }
-            vscode.workspace.getConfiguration("one-vscode").update("showInfo", show_tool_name, true);
+            vscode.workspace.getConfiguration('one-vscode').update('showInfo', show_tool_name, true);
         });
 
-        vscode.commands.registerCommand("onevscode.enableCodeLens", () => {
-            vscode.workspace.getConfiguration("one-vscode").update("enableCodeLens", true, true);
+        vscode.commands.registerCommand('onevscode.enableCodeLens', () => {
+            vscode.workspace.getConfiguration('one-vscode').update('enableCodeLens', true, true);
         });
 
-        vscode.commands.registerCommand("onevscode.disableCodeLens", () => {
-            vscode.workspace.getConfiguration("one-vscode").update("enableCodeLens", false, true);
+        vscode.commands.registerCommand('onevscode.disableCodeLens', () => {
+            vscode.workspace.getConfiguration('one-vscode').update('enableCodeLens', false, true);
         });
     }
 
@@ -42,7 +42,7 @@ export class CodelensProvider implements vscode.CodeLensProvider {
         document: vscode.TextDocument,
         token: vscode.CancellationToken
     ): vscode.CodeLens[] | Thenable<vscode.CodeLens[]> {
-        if (vscode.workspace.getConfiguration("one-vscode").get("enableCodeLens", true)) {
+        if (vscode.workspace.getConfiguration('one-vscode').get('enableCodeLens', true)) {
             this.codeLenses = [];
 
             const regex = new RegExp(this.regex);
@@ -68,7 +68,7 @@ export class CodelensProvider implements vscode.CodeLensProvider {
     }
 
     public resolveCodeLens(codeLens: vscode.CodeLens, token: vscode.CancellationToken) {
-        if (vscode.workspace.getConfiguration("one-vscode").get("enableCodeLens", true)) {
+        if (vscode.workspace.getConfiguration('one-vscode').get('enableCodeLens', true)) {
             let line_str = vscode.window.activeTextEditor?.document.getText(codeLens.range);
 
             let start_pos = new vscode.Position(codeLens.range.start.line + 1, 0);
@@ -79,7 +79,7 @@ export class CodelensProvider implements vscode.CodeLensProvider {
                     codeLens.command = {
                         title: item.description,
                         tooltip: item.description,
-                        command: "onevscode.codelensAction",
+                        command: 'onevscode.codelensAction',
                         arguments: [line_str, new vscode.Range(start_pos, end_pos)],
                     };
                 }
