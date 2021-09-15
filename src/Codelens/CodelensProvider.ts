@@ -79,7 +79,7 @@ export class CodelensProvider implements vscode.CodeLensProvider {
             tools.forEach((item) => {
                 if (item.name == line_str) {
                     codeLens.command = {
-                        title: item.name,
+                        title: item.description,
                         tooltip: item.description,
                         command: "onevscode.codelensAction",
                         arguments: [line_str, new vscode.Range(start_pos, end_pos)],
