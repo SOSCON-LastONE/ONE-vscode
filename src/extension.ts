@@ -14,29 +14,29 @@
  * limitations under the License.
  */
 
-import * as vscode from "vscode";
-import { Project } from "./Project";
-import { Utils } from "./Utils";
-import { CodelensProvider } from "./Codelens/CodelensProvider";
+import * as vscode from 'vscode';
+import {Project} from './Project';
+import {Utils} from './Utils';
+import {CodelensProvider} from './Codelens/CodelensProvider';
 
 export function activate(context: vscode.ExtensionContext) {
-    console.log("one-vscode activate OK");
+  console.log('one-vscode activate OK');
 
-    let logger = new Utils.Logger();
-    let projectBuilder = new Project.Builder(logger);
+  let logger = new Utils.Logger();
+  let projectBuilder = new Project.Builder(logger);
 
-    projectBuilder.init();
+  projectBuilder.init();
 
-    let disposableOneVsc = vscode.commands.registerCommand("onevscode.build", () => {
-        console.log("one build...");
-        projectBuilder.build(context);
-    });
-    context.subscriptions.push(disposableOneVsc);
+  let disposableOneVsc = vscode.commands.registerCommand("onevscode.build", () => {
+    console.log("one build...");
+    projectBuilder.build(context);
+  });
+  context.subscriptions.push(disposableOneVsc);
 
-    let codelens = new CodelensProvider();
-    vscode.languages.registerCodeLensProvider("*", codelens);
+  let codelens = new CodelensProvider();
+  vscode.languages.registerCodeLensProvider("*", codelens);
 }
 
 export function deactivate() {
-    // TODO do cleanup
+  // TODO do cleanup
 }
