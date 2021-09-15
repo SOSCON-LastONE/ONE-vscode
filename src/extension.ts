@@ -27,8 +27,8 @@ export function activate(context: vscode.ExtensionContext) {
 
   projectBuilder.init();
 
-  let disposableOneVsc = vscode.commands.registerCommand("onevscode.build", () => {
-    console.log("one build...");
+  let disposableOneVsc = vscode.commands.registerCommand('onevscode.build', () => {
+    console.log('one build...');
     projectBuilder.build(context);
   });
   context.subscriptions.push(disposableOneVsc);
