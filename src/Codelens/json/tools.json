@@ -1,0 +1,71 @@
+[
+	{
+		"name" : "[one-build]",
+		"body" : [
+			"- [one-import-tf] : command line tool to convert TensorFlow to circle\n",
+			"- [one-import-tflite] : command line tool to convert TensorFlow lite to circle\n",
+			"- [one-import-onnx] : command line tool to convert ONNX to circle\n",
+			"- [one-import-bcq] : command line tool to convert TensorFlow with BCQ to circle\n"
+		],
+		"description" : "command line tool to run ONE drivers in customized order\n"
+	},
+	{
+		"name" : "[one-import-tf]",
+		"body": [
+			"- input_path : full filepath of the input file\n",
+			"- output_path : full filepath of the output file\n",
+			"- input_arrays : names of the input arrays, comma-separated\n",
+			"- input_shapes : shapes corresponding to --input_arrays, colon-separated (ex:\"1,4,4,3:1,20,20,3\")\n",
+			"- output_arrays : names of the output arrays, comma-separated\n",
+			"- converter_version : use TensorFlow Lite Converter version\n",
+			"\t- v1 : use TensorFlow Lite Converter 1.x\n",
+			"\t- v2 : use TensorFlow Lite Converter 2.x\n",
+			"- save_intermediate : Save intermediate files to output folder\n",
+			"- model_format\n",
+			"\t- graph_def : use graph def file(default)\n",
+			"\t- saved_model : use saved model\n",
+			"\t- keras_model : use keras model\n"
+		],
+		"description" : "command line tool to convert TensorFlow to circle\n"
+	},
+	{
+		"name" : "[one-import-tflite]",
+		"body" : [
+			"- input_path : full filepath of the input file\n",
+			"- output_path : full filepath of the output file\n"
+		],
+		"description" : "command line tool to convert TensorFlow lite to circle\n"
+	},
+	{
+		"name" : "[one-import-onnx]",
+		"body" : [
+			"- input_path : full filepath of the input file\n",
+			"- output_path : full filepath of the output file\n",
+			"- input_arrays : names of the input arrays, comma-separated\n",
+			"- output_arrays : names of the output arrays, comma-separated\n",
+			"- converter_version : use TensorFlow Lite Converter version\n",
+			"\t- v1 : use TensorFlow Lite Converter 1.x\n",
+			"\t- v2 : use TensorFlow Lite Converter 2.x\n",
+			"- save_intermediate : Save intermediate files to output folder\n",
+			"- model_format\n",
+			"\t- graph_def : use graph def file(default)\n",
+			"\t- saved_model : use saved model\n",
+			"\t- keras_model : use keras model\n"
+		],
+		"description" : "command line tool to convert ONNX to circle\n"
+	},
+	{
+		"name" : "[one-import-bcq]",
+		"body" : [
+			"- input_path : full filepath of the input file\n",
+			"- output_path : full filepath of the output file\n",
+			"- input_arrays : names of the input arrays, comma-separated\n",
+			"- input_shapes : shapes corresponding to --input_arrays, colon-separated (ex:\"1,4,4,3:1,20,20,3\")\n",
+			"- output_arrays : names of the output arrays, comma-separated\n",
+			"- converter_version : use TensorFlow Lite Converter version\n",
+			"\t- v1 : use TensorFlow Lite Converter 1.x\n",
+			"\t- v2 : use TensorFlow Lite Converter 2.x\n"
+		],
+		"description" : "command line tool to convert TensorFlow with BCQ to circle\n"
+	}
+]
