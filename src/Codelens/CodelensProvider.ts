@@ -22,10 +22,8 @@ export class CodelensProvider implements vscode.CodeLensProvider {
 
             const find_tool_idx = show_tool_name.findIndex((tool) => tool == args);
             if (find_tool_idx == -1) {
-                console.log("push item : ", args);
                 show_tool_name.push(args);
             } else {
-                console.log("delete item : ", show_tool_name[find_tool_idx]);
                 show_tool_name.splice(find_tool_idx, 1);
             }
             vscode.workspace.getConfiguration("one-vscode").update("showInfo", show_tool_name, true);
