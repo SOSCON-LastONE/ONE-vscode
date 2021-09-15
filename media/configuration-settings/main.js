@@ -396,11 +396,11 @@ const buildOptionDom = function (target) {
   optionsNameTag.appendChild(nameUlTag);
 };
 
-const getFilePath = function (tool) {
-  vscode.postMessage({
-    command: "inputPath",
-    selectedTool: tool,
-  });
+const sendMessage = function(command, payload){
+    vscode.postMessage({
+        command: command,
+        payload: payload
+    });
 };
 
 const changeSelect = function (event) {

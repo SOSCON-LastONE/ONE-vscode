@@ -1,19 +1,8 @@
 import * as vscode from 'vscode';
 
-export interface Tool{
-    type: string;
-    use: boolean;
-    options: [option];
-}
-
-export interface option{
-  optionName:string;
-  optionValue:boolean | string;
-}
-
 export function exportConfig(oneToolList: any): void{
-    const ConfigPareser = require('configparser');
-    const config = new ConfigPareser();
+    const configPareser = require('configparser');
+    const config = new configPareser();
     
     config.addSection('one-build');
 
@@ -35,10 +24,8 @@ export function exportConfig(oneToolList: any): void{
       };
     vscode.window.showSaveDialog(optionsForExportDialog).then(fileUri => {
       if (fileUri) {
-        console.log('before write file')
-        console.log(fileUri.path);
         config.write(fileUri.path);
-        console.log('Selected file!!!: ' + fileUri.path);
+        console.log('Selected file: ' + fileUri.path);
         }
     });
 }
