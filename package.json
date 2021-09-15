@@ -68,12 +68,7 @@
         "one-vscode.enableCodeLens": {
           "type": "boolean",
           "default": true
-        },
-        "one-vscode.showInfo" : {
-          "type" : "array",
-          "default":[],
-          "description": "test"
-      }
+        }
       }
     }
   },
