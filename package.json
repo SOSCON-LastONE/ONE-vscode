@@ -10,19 +10,42 @@
     "Other"
   ],
   "activationEvents": [
-    "onCommand:onevscode.build"
+    "onCommand:onevscode.build",
+    "onCommand:onevscode.codelensAction",
+    "onCommand:onevscode.disableCodeLens",
+    "onCommand:onevscode.enableCodeLens"
   ],
   "main": "./out/extension.js",
   "contributes": {
-    "languages": [{
-      "id": "ini",
-      "aliases": ["Configuration"],
-      "extensions": [".cfg"]
-    }],
+    "languages": [
+      {
+        "id": "ini",
+        "aliases": [
+          "Configuration"
+        ],
+        "extensions": [
+          ".cfg"
+        ]
+      }
+    ],
     "commands": [
       {
         "command": "onevscode.build",
         "title": "one build"
+      },
+      {
+        "command": "onevscode.codelensAction",
+        "title": "codelensAction"
+      },
+      {
+        "title": "Enable CodeLens",
+        "command": "onevscode.enableCodeLens",
+        "category": "CodeLens Sample"
+      },
+      {
+        "title": "Disable Codelens",
+        "command": "onevscode.disableCodeLens",
+        "category": "CodeLens Sample"
       }
     ],
     "snippets": [
