@@ -7,18 +7,25 @@
     "vscode": "^1.46.0"
   },
   "categories": [
-    "Other"
+    "Other",
+    "Snippets"
   ],
   "activationEvents": [
     "onCommand:onevscode.build"
   ],
   "main": "./out/extension.js",
   "contributes": {
-    "languages": [{
-      "id": "ini",
-      "aliases": ["Configuration"],
-      "extensions": [".cfg"]
-    }],
+    "languages": [
+      {
+        "id": "ini",
+        "aliases": [
+          "Configuration"
+        ],
+        "extensions": [
+          ".cfg"
+        ]
+      }
+    ],
     "commands": [
       {
         "command": "onevscode.build",
