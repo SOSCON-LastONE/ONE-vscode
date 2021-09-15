@@ -43,10 +43,7 @@
     "@typescript-eslint/eslint-plugin": "^4.9.0",
     "@typescript-eslint/parser": "^4.9.0",
     "eslint": "^7.15.0",
-<<<<<<< HEAD
     "ini": "^2.0.0",
-=======
->>>>>>> c8cacbd (feat: add openDialog to export configuration button)
     "glob": "^7.1.6",
     "mocha": "^8.1.3",
     "typescript": "^4.1.2",

@@ -35,6 +35,8 @@ export function exportConfig(oneToolList: any): void{
       };
     vscode.window.showSaveDialog(optionsForExportDialog).then(fileUri => {
       if (fileUri) {
+        console.log('before write file')
+        console.log(fileUri.path);
         config.write(fileUri.path);
         console.log('Selected file!!!: ' + fileUri.path);
         }
