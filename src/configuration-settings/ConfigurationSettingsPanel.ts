@@ -140,7 +140,8 @@ export class ConfigurationSettingsPanel {
           );
         break;
         case 'exportConfig':
-          exportConfig();
+          console.log(data.payload);
+          exportConfig(data.payload);
         break;
       }
     });

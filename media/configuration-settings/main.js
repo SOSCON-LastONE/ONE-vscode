@@ -623,11 +623,11 @@ const exportValidation = function() {
 }
 
 const exportConfiguration = function() {
-    sendMessage('exportConfig', '')
+    sendMessage('exportConfig', oneToolList)
     if (exportValidation()) {
         console.log('validation OK')
     }
-
+}
 const runConfiguration = function() {
 
 }
