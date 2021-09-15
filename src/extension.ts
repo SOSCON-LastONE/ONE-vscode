@@ -15,8 +15,9 @@
  */
 
 import * as vscode from 'vscode';
-import {Project} from './Project';
-import {Utils} from './Utils';
+import { Project } from './Project';
+import { Utils } from './Utils';
+import { CodelensProvider } from './Codelens/CodelensProvider';
 
 export function activate(context: vscode.ExtensionContext) {
   console.log('one-vscode activate OK');
@@ -31,6 +32,9 @@ export function activate(context: vscode.ExtensionContext) {
     projectBuilder.build(context);
   });
   context.subscriptions.push(disposableOneVsc);
+
+  let codelens = new CodelensProvider();
+  vscode.languages.registerCodeLensProvider("*", codelens);
 }
 
 export function deactivate() {
