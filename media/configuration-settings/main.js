@@ -407,24 +407,20 @@ const changeSelect = function(event) {
     emptyOptionBox(true)
     const selectedText = event.target.options[event.target.selectedIndex].text
     switch (selectedText) {
-        case 'bcq': {
-            oneImportBcq.use = true
-            oneImportOnnx.use = false
-            oneImportTf.use = false
-            oneImportTflite.use = false
-            for (let i=0;i<oneImport.options.length;i++) {
-                if (i === 0) {
-                    oneImport.options[i].optionValue = true
-                } else {
-                    oneImport.options[i].optionValue = false
-                }
-            }
-            buildOptionDom(oneImportBcq)
-            break
-        }
-      }
-      buildOptionDom(oneImportBcq);
-      break;
+      case 'bcq': {
+          oneImportBcq.use = true
+          oneImportOnnx.use = false
+          oneImportTf.use = false
+          oneImportTflite.use = false
+          for (let i=0;i<oneImport.options.length;i++) {
+              if (i === 0) {
+                  oneImport.options[i].optionValue = true
+              } else {
+                  oneImport.options[i].optionValue = false
+              }
+          }
+        buildOptionDom(oneImportBcq)
+        break
     }
     case "onnx": {
       oneImportBcq.use = false;
