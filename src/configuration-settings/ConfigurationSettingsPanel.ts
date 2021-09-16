@@ -1,9 +1,7 @@
-import { request } from 'http';
-import * as vscode from 'vscode';
-import {getNonce} from '../getNonce';
-import {importConfig} from './Dialog/ImportConfigDialog'
-import { exportConfig } from './Dialog/ExportConfigDialog';
-// import { PathDialog } from './PathDialog';
+import * as vscode from "vscode";
+import {getNonce} from "../getNonce";
+import {exportConfig} from "./Dialog/ExportConfigDialog";
+import {getInputPath} from "./Dialog/InputFileDialog";
 
 export class ConfigurationSettingsPanel {
   /**
@@ -11,7 +9,7 @@ export class ConfigurationSettingsPanel {
    */
   public static currentPanel: ConfigurationSettingsPanel|undefined;
 
-  public static readonly viewType = 'one-vscode';
+  public static readonly viewType = "one-vscode";
 
   private readonly _panel: vscode.WebviewPanel;
   private readonly _extensionUri: vscode.Uri;
@@ -30,15 +28,15 @@ export class ConfigurationSettingsPanel {
 
     // Otherwise, create a new panel.
     const panel = vscode.window.createWebviewPanel(
-        ConfigurationSettingsPanel.viewType, 'ConfigurationSettings', column || vscode.ViewColumn.One, {
+        ConfigurationSettingsPanel.viewType, "ConfigurationSettings", column || vscode.ViewColumn.One, {
           // Enable javascript in the webview
           enableScripts: true,
 
           // And restrict the webview to only loading content from our
-          // extension's `media` directory.
+          // extension"s `media` directory.
           localResourceRoots: [
-            vscode.Uri.joinPath(extensionUri, 'media/configuration-settings'),
-            vscode.Uri.joinPath(extensionUri, 'out/compiled'),
+            vscode.Uri.joinPath(extensionUri, "media/configuration-settings"),
+            vscode.Uri.joinPath(extensionUri, "out/compiled"),
           ],
         });
 
@@ -58,26 +56,11 @@ export class ConfigurationSettingsPanel {
     this._panel = panel;
     this._extensionUri = extensionUri;
 
-    // Set the webview's initial html content
+    // Set the webview"s initial html content
     this._update();
 
-    // Listen for when the panel is disposed
-    // This happens when the user closes the panel or when the panel is closed
-    // programatically
     this._panel.onDidDispose(() => this.dispose(), null, this._disposables);
 
-    // // Handle messages from the webview
-    // this._panel.webview.onDidReceiveMessage(
-    //   (message) => {
-    //     switch (message.command) {
-    //       case "alert":
-    //         vscode.window.showErrorMessage(message.text);
-    //         return;
-    //     }
-    //   },
-    //   null,
-    //   this._disposables
-    // );
   }
 
   public dispose() {
@@ -99,30 +82,14 @@ export class ConfigurationSettingsPanel {
     webview.html = this._getHtmlForWebview(webview);
     webview.onDidReceiveMessage(async (data) => {
       switch (data.command) {
-        case 'inputPath':
-          const optionsForInputDialog: vscode.OpenDialogOptions = {
-            canSelectMany: false, 
-            openLabel: 'Open',
-            filters: {
-               'allFiles': ['*']
-           }
-         };
-
-        vscode.window.showOpenDialog(optionsForInputDialog).then(fileUri => {
-          if (fileUri && fileUri[0]) {
-            const pathToModelFile = fileUri[0].fsPath;
-            console.log('Selected file: ' + pathToModelFile);
-                webview.postMessage({
-                  command: 'inputPath',
-                  selectedTool: data.selectedTool,
-                  filePath: pathToModelFile,
-                });
-              }
-            }
-          );
+        case "inputPath":
+          getInputPath(webview, data.payload);
         break;
-        case 'exportConfig':
+        case "exportConfig":
           exportConfig(data.payload);
+        break;
+        case "alert": 
+        vscode.window.showErrorMessage(data.payload);
         break;
       }
     });
@@ -131,16 +98,13 @@ export class ConfigurationSettingsPanel {
   private _getHtmlForWebview(webview: vscode.Webview) {
     // And the uri we use to load this script in the webview
     const scriptUri =
-        webview.asWebviewUri(vscode.Uri.joinPath(this._extensionUri, 'media/configuration-settings', 'main.js'));
+        webview.asWebviewUri(vscode.Uri.joinPath(this._extensionUri, "media/configuration-settings", "main.js"));
 
     // Uri to load styles into webview
     const stylesResetUri =
-        webview.asWebviewUri(vscode.Uri.joinPath(this._extensionUri, 'media/configuration-settings', 'reset.css'));
+        webview.asWebviewUri(vscode.Uri.joinPath(this._extensionUri, "media/configuration-settings", "reset.css"));
     const stylesMainUri =
-        webview.asWebviewUri(vscode.Uri.joinPath(this._extensionUri, 'media/configuration-settings', 'vscode.css'));
-    // const cssUri = webview.asWebviewUri(
-    //     vscode.Uri.joinPath(this._extensionUri, 'out',
-    //     'compiled/swiper.css'));
+        webview.asWebviewUri(vscode.Uri.joinPath(this._extensionUri, "media/configuration-settings", "vscode.css"));
 
     // Use a nonce to only allow specific scripts to be run
     const nonce = getNonce();

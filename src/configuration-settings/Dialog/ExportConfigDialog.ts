@@ -1,31 +1,39 @@
-import * as vscode from 'vscode';
+import * as vscode from "vscode";
 
 export function exportConfig(oneToolList: any): void{
-    const configPareser = require('configparser');
+    const configPareser = require("configparser");
     const config = new configPareser();
     
-    config.addSection('one-build');
+    config.addSection("one-build");
 
     for(let i = 0; i < oneToolList.length; i++){
-      config.set('one-build', oneToolList[i].type, oneToolList[i].use);
-      if(oneToolList[i].use === false) continue;
+      config.set("one-build", oneToolList[i].type, oneToolList[i].use ? "True":"False");
+      if(oneToolList[i].use === false) {
+        continue;
+      }
       config.addSection(oneToolList[i].type);
       for(let j = 0; j < oneToolList[i].options.length; j++){
-        if(oneToolList[i].options[j].optionValue === false || oneToolList[i].options[j].optionValue === '') continue;
-        config.set(oneToolList[i].type, oneToolList[i].options[j].optionName, oneToolList[i].options[j].optionValue);
+        let optionValue = oneToolList[i].options[j].optionValue;
+        if(optionValue === false || optionValue === "") {
+          continue;
+        }
+        if(typeof optionValue === "boolean") {
+          optionValue = "True";
+        }
+        config.set(oneToolList[i].type, oneToolList[i].options[j].optionName, optionValue);
       }
     }
 
     const optionsForExportDialog: vscode.SaveDialogOptions = {
-        defaultUri: vscode.Uri.file('template.cfg'),
+        defaultUri: vscode.Uri.file("template.cfg"),
         filters: {
-          'allFiles': ['*']
+          "allFiles": ["*"]
         }
       };
     vscode.window.showSaveDialog(optionsForExportDialog).then(fileUri => {
       if (fileUri) {
         config.write(fileUri.path);
-        console.log('Selected file: ' + fileUri.path);
+        console.log("Selected file: " + fileUri.path);
         }
     });
 }
