@@ -1,6 +1,7 @@
 import * as vscode from "vscode";
 import {getNonce} from "../getNonce";
 import {exportConfig} from "./Dialog/ExportConfigDialog";
+import {importConfig} from './Dialog/ImportConfigDialog'
 import {getInputPath} from "./Dialog/InputFileDialog";
 
 export class ConfigurationSettingsPanel {
@@ -87,6 +88,11 @@ export class ConfigurationSettingsPanel {
         break;
         case "exportConfig":
           exportConfig(data.payload);
+        break;
+        case "importConfig":
+          const webview = this._panel.webview;
+          webview.html = this._getHtmlForWebview(webview);
+          importConfig(webview);
         break;
         case "alert": 
         vscode.window.showErrorMessage(data.payload);
