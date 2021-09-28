@@ -51,6 +51,19 @@ export function activate(context: vscode.ExtensionContext) {
         ConfigurationSettingsPanel.createOrShow(context);
       })
   context.subscriptions.push(disposableOneConfigurationSettings);
+
+  let myStatusBarItem: vscode.StatusBarItem;
+  const statusBarCommand = 'onevscode.configuration-settings-statusBar';
+	let statusBar = vscode.commands.registerCommand(statusBarCommand, () => {
+    console.log('one configuration settings...')
+		ConfigurationSettingsPanel.createOrShow(context);
+	});
+  context.subscriptions.push(statusBar);
+  myStatusBarItem = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Right, 100);
+  myStatusBarItem.text =`$(file-add) ONE configuration Settings`;
+	myStatusBarItem.command = statusBarCommand;
+	context.subscriptions.push(myStatusBarItem);
+  myStatusBarItem.show();
 }
 
 export function deactivate() {
