@@ -17,6 +17,7 @@
 import * as vscode from 'vscode';
 
 import {ConfigurationSettingsPanel} from './Config/ConfigPanel';
+import {createStatusBarItem} from './Config/ConfigStatusBar';
 import {Project} from './Project';
 import {Utils} from './Utils';
 
@@ -51,6 +52,7 @@ export function activate(context: vscode.ExtensionContext) {
         ConfigurationSettingsPanel.createOrShow(context);
       });
   context.subscriptions.push(disposableOneConfigurationSettings);
+  createStatusBarItem(context);
 }
 
 export function deactivate() {
