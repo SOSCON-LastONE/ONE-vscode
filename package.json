@@ -12,10 +12,10 @@
   "activationEvents": [
     "onCommand:onevscode.build",
     "onCommand:onevscode.import",
-    "onCommand:onevscode.json-tracer",
+    "onCommand:onevscode.barchart",
     "onCommand:onevscode.configuration-settings",
-    "onCommand:onevscode.toggle-codelens",
-    "*"
+    "onCommand:onevscode.show-codelens",
+    "onStartupFinished"
   ],
   "main": "./out/extension.js",
   "contributes": {
@@ -37,8 +37,8 @@
         "title": "one configuration-settings"
       },
       {
-        "command": "onevscode.toggle-codelens",
-        "title": "one toggle codelens"
+        "command": "onevscode.show-codelens",
+        "title": "show codelens"
       }
     ],
     "configuration": {
@@ -73,7 +73,15 @@
         "language": "ini",
         "path": "./src/Snippets/tools.json"
       }
-    ]
+    ],
+    "configuration": {
+      "properties": {
+        "one-vscode.enableCodeLens": {
+          "type": "boolean",
+          "default": true
+        }
+      }
+    }
   },
   "scripts": {
     "vscode:prepublish": "npm run compile",
