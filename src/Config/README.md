@@ -3,8 +3,8 @@
 This extension adds a gui configuration file setting for ONE developers. This includes:
 
 - make new cfg file for ONE compiler
-- import cfg file and fix it
-- export cfg gile
+- import cfg file and revise it
+- export cfg file
 - run cfg file to make circle file
 
 
