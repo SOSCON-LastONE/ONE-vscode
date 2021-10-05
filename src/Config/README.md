@@ -11,7 +11,7 @@ This extension adds a gui configuration file setting for ONE developers. This in
 
 ### Demo
 
-![demo](/demo.gif)
+![demo](./demo.gif)
 
 
 
