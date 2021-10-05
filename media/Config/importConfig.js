@@ -25,12 +25,12 @@
       if (importOpt === oneToolList[i].type) {
         oneImport.use = true;
         chooseImportOption(i);
-      } for (let i = 3; i < oneToolList.length; i++) {
-        if (importOpt === oneToolList[i].type && i > 3) {
+      } 
+    }for (let i = 3; i < oneToolList.length; i++) {
+        if (importOpt === oneToolList[i].type) {
         oneToolList[i].use = true;
     }
   }
-}
   }
 };
 
