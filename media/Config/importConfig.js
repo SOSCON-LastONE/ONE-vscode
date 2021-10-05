@@ -21,16 +21,17 @@
  */
  const oneToolToggle = function(data, importOpt) {
   if (data[importOpt] === 'True') {
-  for (let i = 0; i < 3; i++) {
+    for (let i = 0; i < oneImportToolDivision; i++) {
       if (importOpt === oneToolList[i].type) {
         oneImport.use = true;
         chooseImportOption(i);
-      } 
-    }for (let i = 3; i < oneToolList.length; i++) {
-        if (importOpt === oneToolList[i].type) {
-        oneToolList[i].use = true;
+      }
     }
-  }
+    for (let i = oneImportToolDivision; i < oneToolList.length; i++) {
+      if (importOpt === oneToolList[i].type) {
+        oneToolList[i].use = true;
+      }
+    }
   }
 };
 

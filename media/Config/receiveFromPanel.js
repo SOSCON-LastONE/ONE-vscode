@@ -48,12 +48,10 @@ window.addEventListener("message", (event) => {
             if (tool === 'one-build' || tool === 'onecc') {
               oneToolToggle(data.options[tool], importOpt);
             }
-             // oneToolList array idx 0~2 : one-import-xxx name
-            // oneToolList array idx 3~ : one-xxx name
             for (let i = 0; i < oneToolList.length; i++) {
-              if (tool === oneToolList[i].type && i <= 3) {
+              if (tool === oneToolList[i].type && i < oneImportToolDivision) {
                 oneImportTools(data.options[tool], importOpt, oneToolList[i].options);
-              } else if (tool ===oneToolList[i].type && i > 3) {
+              } else if (tool ===oneToolList[i].type && i >= oneImportToolDivision) {
                 oneOtherTools(data.options[tool], importOpt, oneToolList[i].options);
             }
           }
