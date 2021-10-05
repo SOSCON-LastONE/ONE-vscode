@@ -49,9 +49,9 @@ window.addEventListener("message", (event) => {
               oneToolToggle(data.options[tool], importOpt);
             }
             for (let i = 0; i < oneToolList.length; i++) {
-              if (tool === oneToolList[i].type && i <= 3) {
+              if (tool === oneToolList[i].type && i < oneImportToolSeparation) {
                 oneImportTools(data.options[tool], importOpt, oneToolList[i].options);
-              } else if (tool ===oneToolList[i].type && i > 3) {
+              } else if (tool ===oneToolList[i].type && i >= oneImportToolSeparation) {
                 oneOtherTools(data.options[tool], importOpt, oneToolList[i].options);
             }
           }
