@@ -57,14 +57,12 @@ export function activate(context: vscode.ExtensionContext) {
       });
   context.subscriptions.push(disposableOneConfigurationSettings);
 
-  let disposableToggleCodelens =
-      vscode.commands.registerCommand('onevscode.toggle-codelens', () => {
-        let codelensState =
-            vscode.workspace.getConfiguration('one-vscode').get('enableCodelens', true);
-        vscode.workspace.getConfiguration('one-vscode')
-            .update('enableCodelens', !codelensState, true);
-      });
-  context.subscriptions.push(disposableToggleCodelens);
+  let disposableShowCodelens = vscode.commands.registerCommand('onevscode.toggle-codelens', () => {
+    const codelensState = vscode.workspace.getConfiguration('one-vscode').get('enableCodeLens', true);
+    console.log(codelensState);
+    vscode.workspace.getConfiguration('one-vscode').update('enableCodeLens', !codelensState, true);
+  });
+  context.subscriptions.push(disposableShowCodelens);
 
   let codelens = new CodelensProvider();
   let disposableCodelens = vscode.languages.registerCodeLensProvider('ini', codelens);
