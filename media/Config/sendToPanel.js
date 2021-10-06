@@ -17,9 +17,9 @@
 const vscode = acquireVsCodeApi();
 
 // send message to config panel
-const sendMessage = function (command, payload) {
-    vscode.postMessage({
-      command: command,
-      payload: payload,
-    });
+const sendMessage = function(command, payload) {
+  vscode.postMessage({
+    command: command,
+    payload: payload,
+  });
 };

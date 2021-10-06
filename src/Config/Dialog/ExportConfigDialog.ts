@@ -17,9 +17,10 @@
 import * as vscode from 'vscode';
 import {Balloon} from '../../Utils/Balloon';
 
-export function exportConfig(payLoad: any): void {
-  const oneToolList = payLoad.oneToolList;
-  const fileName = payLoad.fileName;
+// Make a '.cfg' file
+export function exportConfig(payload: any): void {
+  const oneToolList = payload.oneToolList;
+  const fileName = payload.fileName;
   const configPareser = require('configparser');
   const config = new configPareser();
 
@@ -27,10 +28,13 @@ export function exportConfig(payLoad: any): void {
 
   for (let i = 0; i < oneToolList.length; i++) {
     config.set('one-build', oneToolList[i].type, oneToolList[i].use ? 'True' : 'False');
+
     if (oneToolList[i].use === false) {
       continue;
     }
+
     config.addSection(oneToolList[i].type);
+
     for (let j = 0; j < oneToolList[i].options.length; j++) {
       let optionValue = oneToolList[i].options[j].optionValue;
       if (optionValue === false || optionValue === '') {
@@ -43,6 +47,7 @@ export function exportConfig(payLoad: any): void {
     }
   }
 
+  // Set options for Export Dialog.
   const optionsForExportDialog: vscode.SaveDialogOptions = {
     defaultUri: vscode.Uri.file(fileName + '.cfg'),
     filters: {
@@ -50,10 +55,12 @@ export function exportConfig(payLoad: any): void {
       'ONE .cfg Files': ['cfg'],
     },
   };
+
+  // Save '.cfg' file and open it.
   vscode.window.showSaveDialog(optionsForExportDialog).then((fileUri) => {
     if (fileUri) {
-      let filePath = fileUri.fsPath;
       try {
+        let filePath = fileUri.fsPath;
         config.write(filePath);
         Balloon.info('Your configuration file is successfully generated!');
         vscode.workspace.openTextDocument(vscode.Uri.file(filePath)).then(doc => {

@@ -23,7 +23,10 @@ import {Logger} from '../Utils/Logger';
 
 import {BuilderJob} from './BuilderJob';
 import {JobCodegen} from './JobCodegen';
+import {JobImportBCQ} from './JobImportBCQ';
+import {JobImportONNX} from './JobImportONNX';
 import {JobImportTF} from './JobImportTF';
+import {JobImportTFLite} from './JobImportTFLite';
 import {JobOptimize} from './JobOptimize';
 import {JobPack} from './JobPack';
 import {JobQuantize} from './JobQuantize';
@@ -49,6 +52,8 @@ const K_INPUT_ARRAYS: string = 'input_arrays';
 const K_OUTPUT_ARRAYS: string = 'output_arrays';
 const K_INPUT_SHAPES: string = 'input_shapes';
 const K_CONVERTER_VERSION: string = 'converter_version';
+const K_MODEL_FORMAT: string = 'model_format';
+const K_SAVE_INTERMEDIATE: string = 'save_intermediate';
 const K_BACKEND: string = 'backend';
 const K_COMMAND: string = 'command';
 
@@ -81,12 +86,59 @@ export class BuilderCfgFile extends EventEmitter implements helpers.FileSelector
     importTF.outputArrays = prop[K_OUTPUT_ARRAYS];
     importTF.inputShapes = prop[K_INPUT_SHAPES];
     importTF.converterVersion = prop[K_CONVERTER_VERSION];
+    importTF.modelFormat = prop[K_MODEL_FORMAT];
+    importTF.saveIntermediate = prop[K_SAVE_INTERMEDIATE];
 
     let inputModel = path.basename(importTF.inputPath);
     importTF.name = 'ImportTF ' + inputModel;
 
     console.log('importTF = ', importTF);
     this.jobOwner.addJob(importTF);
+    this.logger.outputLine('Add Import: ' + inputModel);
+  }
+
+  private cfgImportTflite(prop: any) {
+    let importTFlite = new JobImportTFLite();
+    importTFlite.inputPath = prop[K_INPUT_PATH];
+    importTFlite.outputPath = prop[K_OUTPUT_PATH];
+
+    let inputModel = path.basename(importTFlite.inputPath);
+    importTFlite.name = 'ImportTFlite ' + inputModel;
+
+    console.log('importTFlite = ', importTFlite);
+    this.jobOwner.addJob(importTFlite);
+    this.logger.outputLine('Add Import: ' + inputModel);
+  }
+
+  private cfgImportOnnx(prop: any) {
+    let importONNX = new JobImportONNX();
+    importONNX.inputPath = prop[K_INPUT_PATH];
+    importONNX.outputPath = prop[K_OUTPUT_PATH];
+    importONNX.inputArrays = prop[K_INPUT_ARRAYS];
+    importONNX.outputArrays = prop[K_OUTPUT_ARRAYS];
+
+    let inputModel = path.basename(importONNX.inputPath);
+    importONNX.name = 'Import ' + inputModel;
+
+    console.log('importOnnx = ', importONNX);
+    this.jobOwner.addJob(importONNX);
+    this.logger.outputLine('Add Import: ' + inputModel);
+  }
+
+  private cfgImportBcq(prop: any) {
+    let importBCQ = new JobImportBCQ();
+    importBCQ.inputPath = prop[K_INPUT_PATH];
+    importBCQ.outputPath = prop[K_OUTPUT_PATH];
+    importBCQ.inputArrays = prop[K_INPUT_ARRAYS];
+    importBCQ.outputArrays = prop[K_OUTPUT_ARRAYS];
+    importBCQ.inputShapes = prop[K_INPUT_SHAPES];
+    importBCQ.converterVersion = prop[K_CONVERTER_VERSION];
+
+    let inputModel = path.basename(importBCQ.inputPath);
+    importBCQ.name = 'ImportBCQ ' + inputModel;
+
+    console.log('importTF = ', importBCQ);
+    this.jobOwner.addJob(importBCQ);
     this.logger.outputLine('Add Import: ' + inputModel);
   }
 
@@ -232,6 +284,15 @@ export class BuilderCfgFile extends EventEmitter implements helpers.FileSelector
     if (itemJob === K_IMPORT_TF) {
       let prop = cfgIni[itemJob];
       this.cfgImportTf(prop);
+    } else if (itemJob === K_IMPORT_TFLITE) {
+      let prop = cfgIni[itemJob];
+      this.cfgImportTflite(prop);
+    } else if (itemJob === K_IMPORT_ONNX) {
+      let prop = cfgIni[itemJob];
+      this.cfgImportOnnx(prop);
+    } else if (itemJob === K_IMPORT_BCQ) {
+      let prop = cfgIni[itemJob];
+      this.cfgImportBcq(prop);
     }
     // TODO add other import jobs
 

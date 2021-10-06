@@ -15,38 +15,36 @@
  */
 
 // function for deciding which importOption(ex, one-import-tf) is used
-// if index is out of range, then it means not using import 
+// if index is out of range, then it means not using import
 // you can find oneImport and oneImportOptions in tools.js
 const chooseImportOption = function(index) {
-    for (let i = 0; i < oneImport.options.length; i++) {
-      if (i === index) {
-        oneImport.options[i].optionValue = true;
-        oneImportOptions[i].use = true;
-      } else {
-        oneImport.options[i].optionValue = false;
-        oneImportOptions[i].use = false;
-      }
+  for (let i = 0; i < oneImport.options.length; i++) {
+    if (i === index) {
+      oneImport.options[i].optionValue = true;
+      oneImportOptions[i].use = true;
+    } else {
+      oneImport.options[i].optionValue = false;
+      oneImportOptions[i].use = false;
     }
-  };
-  
+  }
+};
+
 // one-import options are different from other tools so separate toggle function
 // you can find oneImport in tools.js
 // you can find autoCompletePath in pathAutoComplete.js
-const oneImportToggleFunction = function () {
-    const optionFieldset = document.querySelector("#options");
-    const selectTag = document.querySelector("#framework");
-    if (oneImport.use === true) {
-        oneImport.use = false;
-        chooseImportOption(-1);
-        optionFieldset.disabled = true;
-        selectTag.disabled = true;
-    } else {
-        oneImport.use = true;
-        optionFieldset.disabled = false;
-        selectTag.disabled = false;
-    }
-    // you can find autoCompletePath in pathAutoComplete.js
-    autoCompletePath(oneImportBcq);
+const oneImportToggleFunction = function() {
+  const optionFieldset = document.querySelector('#options');
+  const selectTag = document.querySelector('#framework');
+  if (oneImport.use === true) {
+    oneImport.use = false;
+    chooseImportOption(-1);
+    optionFieldset.disabled = true;
+    selectTag.disabled = true;
+  } else {
+    oneImport.use = true;
+    optionFieldset.disabled = false;
+    selectTag.disabled = false;
+  }
+  // you can find autoCompletePath in pathAutoComplete.js
+  autoCompletePath(oneImportBcq);
 };
-
-

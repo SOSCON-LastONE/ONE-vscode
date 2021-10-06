@@ -103,6 +103,7 @@ const outputToInput = function(toolIndex, nextInputValue) {
 
 // autoCompletePath will generate output_path from the input_path for the specific tool.
 // ex) if input_path is 'filename.pb' then 'output_path' will be 'filename.circle' for
+// 'one-import-tf'.
 // You can find 'oneToolList' in 'tool.js'
 const autoCompletePath = function(tool) {
   // tool argument decides which location to start

@@ -19,7 +19,7 @@
  * @param data array that holds all options and values of one-build or onecc
  * @param importOpt option name of one-build or onecc
  */
- const oneToolToggle = function(data, importOpt) {
+const oneToolToggle = function(data, importOpt) {
   if (data[importOpt] === 'True') {
     for (let i = 0; i < oneImportToolSeparation; i++) {
       if (importOpt === oneToolList[i].type) {
@@ -42,10 +42,9 @@
  * @param importOpt option name of one-import-xxx
  * @param defaultImportObject one-import-xxx object of tools.js
  */
- const oneImportTools = function(data, importOpt, defaultImportObject) {
+const oneImportTools = function(data, importOpt, defaultImportObject) {
   for (let i = 0; i < defaultImportObject.length; i++) {
-    if 
-    (importOpt === defaultImportObject[i].optionName) {
+    if (importOpt === defaultImportObject[i].optionName) {
       defaultImportObject[i].optionValue = data[importOpt];
     }
   }

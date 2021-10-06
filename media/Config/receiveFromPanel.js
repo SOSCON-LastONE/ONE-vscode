@@ -14,53 +14,55 @@
  * limitations under the License.
  */
 
-// receive message from config panel and do things for command of receivied message
-window.addEventListener("message", (event) => {
-    const data = event.data;
-    switch (data.command) {
-      case "inputPath":
-        for (let i = 0; i < oneToolList.length; i++) {
-          if (oneToolList[i].type === data.selectedTool) {
-            for (let j = 0; j < oneToolList[i].options.length; j++) {
-              if (oneToolList[i].options[j].optionName === "input_path") {
-                oneToolList[i].options[j].optionValue = data.filePath;
-                console.log(oneToolList[i].options[j].optionValue);
-                const inputTag = document.querySelector("#input_path");
-                inputTag.value = data.filePath;
-                break;
-              }
+// Receive messages from webview panel
+window.addEventListener('message', (event) => {
+  const data = event.data;
+  switch (data.command) {
+    case 'inputPath':
+      for (let i = 0; i < oneToolList.length; i++) {
+        if (oneToolList[i].type === data.selectedTool) {
+          for (let j = 0; j < oneToolList[i].options.length; j++) {
+            if (oneToolList[i].options[j].optionName === 'input_path') {
+              oneToolList[i].options[j].optionValue = data.filePath;
+              console.log('message inputPath: ', oneToolList[i].options[j].optionValue);
+              const inputTag = document.querySelector('#input_path');
+              inputTag.value = data.filePath;
+              break;
             }
-            autoCompletePath(oneToolList[i]);
-            emptyOptionBox(true);
-            buildOptionDom(oneToolList[i]);
-            break;
+          }
+          autoCompletePath(oneToolList[i]);
+          emptyOptionBox(true);
+          buildOptionDom(oneToolList[i]);
+          break;
+        }
+      }
+      break;
+    case 'importConfig':
+      importConfigPath = data.filePath;
+      oneImport.use = false;
+      oneOptimize.use = false;
+      oneQuantize.use = false;
+      onePack.use = false;
+      for (const tool of Object.keys(data.options)) {
+        for (const importOpt in data.options[tool]) {
+          if (tool === 'one-build' || tool === 'onecc') {
+            oneToolToggle(data.options[tool], importOpt);
+          }
+          for (let i = 0; i < oneToolList.length; i++) {
+            // if index is less than 'oneImportToolSeparation', tool name will be 'one-import-xxx'
+            // if index is more than 'oneImportToolSeparation', tool name will be 'one-xxx'
+            if (tool === oneToolList[i].type && i < oneImportToolSeparation) {
+              oneImportTools(data.options[tool], importOpt, oneToolList[i].options);
+            } else if (tool === oneToolList[i].type && i >= oneImportToolSeparation) {
+              oneOtherTools(data.options[tool], importOpt, oneToolList[i].options);
+            }
           }
         }
-        break;
-      case "importConfig":
-        importConfigPath = data.filePath;
-        oneImport.use = false;
-        oneOptimize.use = false;
-        oneQuantize.use = false;
-        onePack.use = false;
-        for (const tool of Object.keys(data.options)) {
-          for (const importOpt in data.options[tool]) {
-            if (tool === 'one-build' || tool === 'onecc') {
-              oneToolToggle(data.options[tool], importOpt);
-            }
-            for (let i = 0; i < oneToolList.length; i++) {
-              if (tool === oneToolList[i].type && i < oneImportToolSeparation) {
-                oneImportTools(data.options[tool], importOpt, oneToolList[i].options);
-              } else if (tool ===oneToolList[i].type && i >= oneImportToolSeparation) {
-                oneOtherTools(data.options[tool], importOpt, oneToolList[i].options);
-            }
-          }
-          }
-        }
-        const tmpEvent = {
-          target: document.querySelector("#import"),
-        };
-        showOptions(tmpEvent);
-        break;
-    }
-  });
+      }
+      const tmpEvent = {
+        target: document.querySelector('#import'),
+      };
+      showOptions(tmpEvent);
+      break;
+  }
+});
