@@ -84,15 +84,7 @@
         "language": "ini",
         "path": "./src/Snippets/tools.json"
       }
-    ],
-    "configuration": {
-      "properties": {
-        "one-vscode.enableCodeLens": {
-          "type": "boolean",
-          "default": true
-        }
-      }
-    }
+    ]
   },
   "scripts": {
     "vscode:prepublish": "npm run compile",
