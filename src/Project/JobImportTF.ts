@@ -56,6 +56,8 @@ export class JobImportTF extends JobImport {
     if (this.saveIntermediate) {
       args.push('--save_intermediate');
     }
+    
+    console.log('args = ', args);
 
     return args;
   }
