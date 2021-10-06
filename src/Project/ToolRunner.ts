@@ -64,7 +64,7 @@ export class ToolRunner {
     let oneccPath = which.sync('onecc', {nothrow: true});
     if (oneccPath === null) {
       // Use fixed installation path
-      oneccPath = '/home/otkryu/one/bin/onecc';
+      oneccPath = '/usr/share/one/bin/onecc';
     }
     console.log('onecc path: ', oneccPath);
     // check if onecc exist
