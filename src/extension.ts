@@ -58,8 +58,7 @@ export function activate(context: vscode.ExtensionContext) {
   context.subscriptions.push(disposableOneConfigurationSettings);
 
   let disposableShowCodelens = vscode.commands.registerCommand('onevscode.toggle-codelens', () => {
-    const codelensState = vscode.workspace.getConfiguration('one-vscode').get('enableCodeLens', true);
-    console.log(codelensState);
+    let codelensState = vscode.workspace.getConfiguration('one-vscode').get('enableCodeLens', true);
     vscode.workspace.getConfiguration('one-vscode').update('enableCodeLens', !codelensState, true);
   });
   context.subscriptions.push(disposableShowCodelens);
